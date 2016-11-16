@@ -62,15 +62,15 @@ function showNewToDo (task, taskId) {
   checkbox.setAttribute('value', taskId);
   checkbox.setAttribute('onchange', 'toggleTask(this)');
   li.setAttribute('style', 'display:inline; padding-left: 10px');
-  li.innerText = task;
+  li.innerText = taskObj;
   li.id = taskId;
   htmlToDos.appendChild(checkbox);
   htmlToDos.appendChild(li);
   htmlToDos.appendChild(lineBreak);
 }
 
-function toggleTask (e) {
-  console.log(e);
+function toggleTask (self) {
+  console.log(self.value, 'is checked:', self.checked);
 }
 
 toDosRef.on('child_added', (snapshot) => {
