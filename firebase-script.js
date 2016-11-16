@@ -48,7 +48,8 @@ function showNewToDo (taskObj, taskId) {
   checkbox.type = 'checkbox';
   // taskId gets snapshot.key
   checkbox.value = taskId;
-  // this sends through input element
+  // `this` sends through input element
+  // http://stackoverflow.com/questions/4471401/getting-value-of-html-checkbox-from-onclick-onchange-events
   checkbox.setAttribute('onchange', 'toggleTask(this)');
   checkbox.checked = taskObj.isDone || false;
   li.style = "display:inline; padding-left: 10px";
