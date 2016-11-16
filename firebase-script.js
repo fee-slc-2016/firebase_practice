@@ -59,7 +59,8 @@ function showNewToDo (task, taskId) {
   const checkbox = document.createElement('input');
   const lineBreak = document.createElement('br');
   checkbox.setAttribute('type', 'checkbox');
-  checkbox.setAttribute('onchange', 'toggleTask(e)');
+  checkbox.setAttribute('value', taskId);
+  checkbox.setAttribute('onchange', 'toggleTask(this)');
   li.setAttribute('style', 'display:inline; padding-left: 10px');
   li.innerText = task;
   li.id = taskId;
