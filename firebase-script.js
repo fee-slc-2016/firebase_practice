@@ -54,15 +54,16 @@ const fbToDoRef = firebase.database().ref().child('todos');
 // Sync our skills additions
 let toDosRef = firebase.database().ref('todos/');
 
-function showNewToDo (task, taskId) {
+function showNewToDo (taskObj, taskId) {
   const li = document.createElement('li');
   const checkbox = document.createElement('input');
   const lineBreak = document.createElement('br');
   checkbox.setAttribute('type', 'checkbox');
   checkbox.setAttribute('value', taskId);
   checkbox.setAttribute('onchange', 'toggleTask(this)');
+  checkbox.checked = taskObj.isDone || false;
   li.setAttribute('style', 'display:inline; padding-left: 10px');
-  li.innerText = taskObj;
+  li.innerText = taskObj.task;
   li.id = taskId;
   htmlToDos.appendChild(checkbox);
   htmlToDos.appendChild(li);
@@ -70,7 +71,10 @@ function showNewToDo (task, taskId) {
 }
 
 function toggleTask (self) {
-  console.log(self.value, 'is checked:', self.checked);
+  let taskId = self.value;
+  let isChecked = self.checked;
+
+  firebase.database().ref('todos/' + taskId + '/isDone').set(isChecked);
 }
 
 toDosRef.on('child_added', (snapshot) => {
