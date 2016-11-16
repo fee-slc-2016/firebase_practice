@@ -54,7 +54,7 @@ const fbToDoRef = firebase.database().ref().child('todos');
 // Sync our skills additions
 let toDosRef = firebase.database().ref('todos/');
 
-function showNewToDo (task, taskId) {
+function showNewToDo (taskObj, taskId) {
   const li = document.createElement('li');
   const checkbox = document.createElement('input');
   const lineBreak = document.createElement('br');
@@ -63,19 +63,24 @@ function showNewToDo (task, taskId) {
   checkbox.setAttribute('value', taskId);
   // this sends through input element
   checkbox.setAttribute('onchange', 'toggleTask(this)');
+  checkbox.checked = taskObj.isDone || false;
   li.setAttribute('style', 'display:inline; padding-left: 10px');
-  li.innerText = task;
+  li.innerText = taskObj.task;
   li.id = taskId;
   htmlToDos.appendChild(checkbox);
   htmlToDos.appendChild(li);
   htmlToDos.appendChild(lineBreak);
 }
 
-function toggleTask (e) {
-  console.log(e);
+function toggleTask (self) {
+  let taskId = self.value;
+  let isChecked = self.checked;
+
+  firebase.database().ref('todos/' + taskId + '/isDone').set(isChecked);
 }
 
 toDosRef.on('child_added', (snapshot) => {
+  console.log("MAKE THIS PUPPY HOWL");
   let key = snapshot.key;
   console.log(key);
   console.log(fbToDoRef.child(key));
@@ -85,7 +90,8 @@ toDosRef.on('child_added', (snapshot) => {
 // Sync our todos modifications
 fbToDoRef.on('child_changed', (snapshot) => {
   const li = document.getElementById(snapshot.key);
-  li.innerText = snapshot.val();
+  let taskObj = snapshot.val();
+  li.innerText = taskObj.task;
 });
 
 // Sync our todos deletions
